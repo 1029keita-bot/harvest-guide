@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東急ハーヴェスト 旅行ガイド</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: #ddd8ce;
+  --border2: #c8c0b0;
+  --text: #1e1a14;
+  --text2: #5a5040;
+  --text3: #9a8e7a;
+  --accent: #7a5230;
+  --accent-light: #b87840;
+  --green: #3a6830;
+  --green-bg: #edf4eb;
+  --green-border: #b8d8b0;
+  --blue: #2a4e7a;
+  --blue-bg: #ebf0f8;
+  --blue-border: #a8c0dc;
+  --gold: #7a5800;
+  --gold-bg: #faf4e0;
+  --gold-border: #d8c070;
+  --purple: #5a3a7a;
+  --purple-bg: #f2edf8;
+  --purple-border: #c0a8dc;
+  --multi-bg: #fff8ee;
+  --multi-border: #e8c880;
+  --multi-text: #7a4a00;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--accent);
+  padding: 16px 28px;
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: baseline; gap: 16px;
+}
+.header-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 18px; font-weight: 600;
+  letter-spacing: 0.12em; color: var(--accent);
+}
+.header-sub { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; }
+
+/* ── TAB NAV ── */
+.tab-nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  padding: 0 28px;
+  gap: 0;
+  position: sticky; top: 53px; z-index: 190;
+}
+.tab-btn {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  padding: 12px 18px;
+  cursor: pointer;
+  border: none; background: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.18s;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.tab-num {
+  font-size: 9px; font-weight: 500;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 5px;
+  color: var(--text3);
+}
+.tab-btn.active .tab-num {
+  background: var(--gold-bg); border-color: var(--gold-border); color: var(--accent);
+}
+
+/* ── CONTENT ── */
+.tab-content { display: none; padding: 24px 28px 60px; max-width: 1400px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+.section-header { margin-bottom: 14px; }
+.section-title { font-family: 'Shippori Mincho', serif; font-size: 16px; font-weight: 400; color: var(--text); letter-spacing: 0.08em; }
+.section-desc { font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+/* ── LEGEND ── */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 14px; padding: 8px 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+}
+.leg { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text3); }
+.leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ── TAGS & BADGES ── */
+.tag { display: inline-block; font-size: 9px; font-weight: 500; padding: 1px 6px; border-radius: 2px; margin: 0 2px 2px 0; }
+.tn { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-border); }
+.te { background: var(--blue-bg); color: var(--blue); border: 0.5px solid var(--blue-border); }
+.ts { background: var(--gold-bg); color: var(--gold); border: 0.5px solid var(--gold-border); }
+.tw { background: var(--purple-bg); color: var(--purple); border: 0.5px solid var(--purple-border); }
+.badge { font-size: 8px; font-weight: 500; padding: 1px 5px; border-radius: 2px; letter-spacing: 0.03em; }
+.b-hv { background: var(--surface2); color: var(--text3); border: 0.5px solid var(--border); }
+.b-v { background: var(--blue-bg); color: var(--blue); border: 0.5px solid var(--blue-border); }
+.b-r { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-border); }
+.b-s { background: var(--gold-bg); color: var(--gold); border: 0.5px solid var(--gold-border); }
+.b-c { background: var(--surface2); color: var(--text3); border: 0.5px dashed var(--border2); }
+.b-multi { background: #fff0d0; color: #7a4a00; border: 0.5px solid #e0b858; }
+
+/* ─────────────────────────────
+   TABS 1 & 2: RANKING TABLES
+───────────────────────────── */
+.tbl-wrap { overflow-x: auto; }
+.r-table { width: 100%; border-collapse: collapse; min-width: 800px; }
+.r-table th, .r-table td {
+  border: 1px solid var(--border); padding: 8px 10px; vertical-align: top; font-size: 11px;
+}
+.r-table th {
+  background: var(--surface2); font-weight: 500; font-size: 10px; color: var(--text3);
+  letter-spacing: 0.06em; text-align: left;
+}
+.r-table td.mc {
+  text-align: center; vertical-align: middle;
+  background: var(--accent); min-width: 52px;
+}
+.mc-num { font-family: 'Shippori Mincho', serif; font-size: 15px; color: #fff; display: block; }
+.mc-ja { font-size: 9px; color: rgba(255,255,255,0.7); }
+.spot-name { font-size: 12px; font-weight: 500; color: var(--text); display: block; margin-bottom: 3px; }
+.hv-note { font-size: 10px; color: var(--text3); margin-top: 4px; display: flex; align-items: flex-start; gap: 4px; }
+.hv-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 4px; }
+.r-table tbody tr:hover td { background: var(--surface2); }
+.r-table tbody tr:hover td.mc { background: var(--accent); }
+
+/* month cell for tab2 */
+.r-table td.month-cell {
+  text-align: center; vertical-align: middle;
+  background: var(--accent); min-width: 58px;
+}
+.r-mon-num { font-family: 'Shippori Mincho', serif; font-size: 17px; color: #fff; display: block; }
+.r-mon-ja { font-size: 9px; color: rgba(255,255,255,0.7); display: block; letter-spacing: 0.08em; }
+.best-fac { font-size: 12px; font-weight: 500; color: var(--text); display: block; margin-bottom: 3px; }
+.best-reason { font-size: 11px; color: var(--text2); line-height: 1.6; }
+.runner-fac { font-size: 11px; font-weight: 500; color: var(--text); display: block; margin-bottom: 2px; }
+.runner-r { font-size: 10px; color: var(--text3); line-height: 1.5; }
+.sub-tip {
+  font-size: 10px; color: var(--accent-light);
+  margin-top: 5px; padding-top: 5px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 4px;
+}
+.sub-tip::before { content: "※"; flex-shrink: 0; }
+
+/* ─────────────────────────────
+   TAB 3: AREA NAV
+───────────────────────────── */
+.area-nav {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 20px; padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+  position: sticky; top: 101px; z-index: 100;
+}
+.area-nav-btn {
+  font-size: 11px; font-weight: 400;
+  color: var(--text2); background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 4px 10px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.area-nav-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ── AREA TITLE ── */
+.area-title {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; color: var(--text3);
+  border-bottom: 2px solid var(--border2);
+  padding-bottom: 6px; margin: 32px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+  scroll-margin-top: 160px;
+}
+.area-title:first-of-type { margin-top: 0; }
+.area-title-badge {
+  font-size: 9px; padding: 1px 6px; border-radius: 2px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text3); font-weight: 400; letter-spacing: 0;
+}
+
+/* ── FACILITY CARD ── */
+.facility {
+  margin-bottom: 10px; border: 1px solid var(--border);
+  border-radius: 5px; overflow: hidden; background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.fac-header {
+  background: var(--surface2); padding: 9px 14px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.fac-name { font-family: 'Shippori Mincho', serif; font-size: 13px; font-weight: 400; color: var(--text); }
+.fac-sub { font-size: 10px; color: var(--text3); }
+.fac-badges { display: flex; flex-wrap: wrap; gap: 3px; margin-left: auto; }
+
+.multi-banner {
+  width: 100%; font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--multi-text); background: var(--multi-bg);
+  border-bottom: 1px solid var(--multi-border);
+  padding: 5px 14px;
+}
+
+.seasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+}
+.sc { padding: 12px 14px; border-right: 1px solid var(--border); }
+.sc:last-child { border-right: none; }
+.sc-label { font-size: 9px; font-weight: 500; color: var(--text3); margin-bottom: 4px; }
+.sc-label.best { color: var(--accent); }
+.sc-mon { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.sc-mon.best { color: var(--accent); }
+.sc-body { font-size: 11px; color: var(--text2); line-height: 1.65; margin-top: 4px; }
+.sc-tips { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+.sc-tip { font-size: 10px; color: var(--text3); display: flex; gap: 4px; line-height: 1.5; margin-bottom: 1px; }
+.sc-tip::before { content: "→"; flex-shrink: 0; color: var(--accent-light); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">東急ハーヴェストクラブ 旅行ガイド</div>
+  <div class="header-sub">全施設 ＋ 準相互利用施設 / 草津 2027年3月開業予定含む</div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab(0)"><span class="tab-num">①</span>全国おすすめランキング</button>
+  <button class="tab-btn" onclick="showTab(1)"><span class="tab-num">②</span>月別 — HV施設ランキング</button>
+  <button class="tab-btn" onclick="showTab(2)"><span class="tab-num">③</span>施設別ベストシーズン</button>
+</div>
+
+<!-- ══════════════════════════════
+     TAB 1: 全国ランキング
+══════════════════════════════ -->
+<div class="tab-content active" id="tab0">
+  <div class="section-header">
+    <div class="section-title">全国 月別おすすめ旅行先ランキング</div>
+    <div class="section-desc">HV施設縛りなし ／ 緑ドット = 近隣にHV・準相互施設あり</div>
+  </div>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>自然・花・紅葉</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--blue)"></div>イベント・祭り</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--gold)"></div>食</div>
+    <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>スキー・冬</div>
+  </div>
+  <div class="tbl-wrap">
+  <table class="r-table">
+    <colgroup><col style="width:52px"><col style="width:14px"><col><col><col><col><col></colgroup>
+    <thead><tr><th>月</th><th>#</th><th>1位</th><th>2位</th><th>3位</th><th>4位</th><th>5位</th></tr></thead>
+    <tbody>
+      <tr><td class="mc"><span class="mc-num">1月</span><span class="mc-ja">睦月</span></td><td></td>
+        <td><span class="spot-name">さっぽろ雪まつり準備・小樽</span><span class="tag tw">雪景色</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">草津温泉（群馬）</span><span class="tag tw">雪×温泉</span><div class="hv-note"><span class="hv-dot"></span>草津（2027開業予定）</div></td>
+        <td><span class="spot-name">京都・冬の特別拝観</span><span class="tag te">ライトアップ</span><div class="hv-note"><span class="hv-dot"></span>京都鷹峯 / RESERVE東山</div></td>
+        <td><span class="spot-name">沖縄・本島南部</span><span class="tag tn">温暖避寒</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">富士山×ダイヤモンド富士（山中湖）</span><span class="tag tn">冬景色</span><div class="hv-note"><span class="hv-dot"></span>山中湖マウント富士</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">2月</span><span class="mc-ja">如月</span></td><td></td>
+        <td><span class="spot-name">さっぽろ雪まつり（札幌）</span><span class="tag te">祭り</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">河津桜（静岡・伊豆）</span><span class="tag tn">早咲き桜</span><div class="hv-note"><span class="hv-dot"></span>天城高原 / 伊東</div></td>
+        <td><span class="spot-name">草津温泉</span><span class="tag tw">雪×温泉</span><div class="hv-note"><span class="hv-dot"></span>草津（2027開業予定）</div></td>
+        <td><span class="spot-name">白川郷・ライトアップ（岐阜）</span><span class="tag te">雪ライトアップ</span><div class="hv-note"><span class="hv-dot"></span>RESERVE飛騨高山</div></td>
+        <td><span class="spot-name">別府温泉×地獄めぐり</span><span class="tag tn">冬温泉</span><div class="hv-note">近隣HV施設なし</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">3月</span><span class="mc-ja">弥生</span></td><td></td>
+        <td><span class="spot-name">京都・桜（哲学の道・円山公園）</span><span class="tag tn">桜</span><div class="hv-note"><span class="hv-dot"></span>京都鷹峯 / RESERVE東山</div></td>
+        <td><span class="spot-name">東京・上野・千鳥ヶ淵</span><span class="tag tn">桜</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">吉野山（奈良）</span><span class="tag tn">桜・山桜</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">弘前城（青森）※下旬〜</span><span class="tag tn">桜</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">熱海桜×温泉</span><span class="tag tn">桜×温泉</span><div class="hv-note"><span class="hv-dot"></span>熱海伊豆山 / VIALA annex</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">4月</span><span class="mc-ja">卯月</span></td><td></td>
+        <td><span class="spot-name">弘前城（青森）</span><span class="tag tn">桜・堀×花びら</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">角館（秋田）</span><span class="tag tn">武家屋敷×桜</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">芝桜・富士山（山梨）</span><span class="tag tn">芝桜</span><div class="hv-note"><span class="hv-dot"></span>山中湖マウント富士</div></td>
+        <td><span class="spot-name">那須・芝桜＆つつじ</span><span class="tag tn">花</span><div class="hv-note"><span class="hv-dot"></span>那須 / 那須Retreat</div></td>
+        <td><span class="spot-name">高遠城址（長野）</span><span class="tag tn">コヒガン桜</span><div class="hv-note"><span class="hv-dot"></span>蓼科リゾート（車1h）</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">5月</span><span class="mc-ja">皐月</span></td><td></td>
+        <td><span class="spot-name">新緑の奥入瀬渓流（青森）</span><span class="tag tn">新緑</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">軽井沢・新緑高原</span><span class="tag tn">新緑・爽快</span><div class="hv-note"><span class="hv-dot"></span>旧軽井沢 / 軽井沢 / VIALA軽井沢</div></td>
+        <td><span class="spot-name">那須高原</span><span class="tag tn">新緑×花</span><div class="hv-note"><span class="hv-dot"></span>那須 / 那須Retreat</div></td>
+        <td><span class="spot-name">富良野・ラベンダー準備（北海道）</span><span class="tag tn">花畑</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">箱根・新緑×芦ノ湖</span><span class="tag tn">新緑</span><div class="hv-note"><span class="hv-dot"></span>箱根甲子園 / VIALA箱根湖悠</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">6月</span><span class="mc-ja">水無月</span></td><td></td>
+        <td><span class="spot-name">鎌倉・あじさい</span><span class="tag tn">あじさい</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">箱根登山電車あじさい</span><span class="tag tn">あじさい電車</span><div class="hv-note"><span class="hv-dot"></span>箱根甲子園 / VIALA箱根翡翠</div></td>
+        <td><span class="spot-name">富良野・ラベンダー（北海道）</span><span class="tag tn">ラベンダー畑</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">軽井沢・避暑開幕</span><span class="tag tn">爽快高原</span><div class="hv-note"><span class="hv-dot"></span>旧軽井沢 / VIALA軽井沢</div></td>
+        <td><span class="spot-name">京都・青もみじ寺院</span><span class="tag tn">青もみじ</span><div class="hv-note"><span class="hv-dot"></span>京都鷹峯 / VIALA annex</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">7月</span><span class="mc-ja">文月</span></td><td></td>
+        <td><span class="spot-name">富良野・ラベンダー最盛（北海道）</span><span class="tag tn">ラベンダー</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">京都・祇園祭</span><span class="tag te">祭り</span><div class="hv-note"><span class="hv-dot"></span>京都鷹峯 / RESERVE東山</div></td>
+        <td><span class="spot-name">軽井沢・蓼科 高原避暑</span><span class="tag tn">避暑</span><div class="hv-note"><span class="hv-dot"></span>軽井沢 / 蓼科 / VIALA軽井沢</div></td>
+        <td><span class="spot-name">隅田川花火（東京）</span><span class="tag te">花火</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">那須高原 避暑</span><span class="tag tn">避暑</span><div class="hv-note"><span class="hv-dot"></span>那須 / 那須Retreat</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">8月</span><span class="mc-ja">葉月</span></td><td></td>
+        <td><span class="spot-name">北海道・美瑛の丘＆富良野</span><span class="tag tn">花畑×大自然</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">青森ねぶた祭</span><span class="tag te">祭り</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">熱海花火大会</span><span class="tag te">花火</span><div class="hv-note"><span class="hv-dot"></span>熱海伊豆山 / VIALA annex</div></td>
+        <td><span class="spot-name">白馬岳・高山植物（長野）</span><span class="tag tn">高山植物</span><div class="hv-note"><span class="hv-dot"></span>斑尾（車1.5h）</div></td>
+        <td><span class="spot-name">沖縄・慶良間諸島</span><span class="tag tn">海水浴・シュノーケル</span><div class="hv-note">近隣HV施設なし</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">9月</span><span class="mc-ja">長月</span></td><td></td>
+        <td><span class="spot-name">上高地（長野）</span><span class="tag tn">初秋の絶景</span><div class="hv-note"><span class="hv-dot"></span>蓼科リゾート（車1.5h）</div></td>
+        <td><span class="spot-name">草津・奥日光 紅葉先陣</span><span class="tag tn">早い紅葉</span><div class="hv-note"><span class="hv-dot"></span>VIALA鬼怒川 / 草津（2027）</div></td>
+        <td><span class="spot-name">阿寒湖・知床（北海道）</span><span class="tag tn">秋の大自然</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">尾瀬ヶ原（群馬）草紅葉</span><span class="tag tn">草紅葉</span><div class="hv-note"><span class="hv-dot"></span>草津（2027）から近い</div></td>
+        <td><span class="spot-name">志摩・英虞湾（三重）</span><span class="tag ts">伊勢海老・真珠</span><div class="hv-note"><span class="hv-dot"></span>都リゾート志摩</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">10月</span><span class="mc-ja">神無月</span></td><td></td>
+        <td><span class="spot-name">日光・いろは坂（栃木）</span><span class="tag tn">紅葉</span><div class="hv-note"><span class="hv-dot"></span>鬼怒川 / VIALA鬼怒川</div></td>
+        <td><span class="spot-name">蓼科・白樺湖（長野）</span><span class="tag tn">紅葉</span><div class="hv-note"><span class="hv-dot"></span>蓼科 / 蓼科リゾート</div></td>
+        <td><span class="spot-name">草津・志賀高原（群馬）</span><span class="tag tn">紅葉</span><div class="hv-note"><span class="hv-dot"></span>草津（2027開業予定）</div></td>
+        <td><span class="spot-name">箱根（神奈川）</span><span class="tag tn">紅葉×芦ノ湖</span><div class="hv-note"><span class="hv-dot"></span>箱根甲子園 / VIALA箱根翡翠・湖悠</div></td>
+        <td><span class="spot-name">飛騨高山・古い町並み</span><span class="tag te">秋祭り×古都</span><div class="hv-note"><span class="hv-dot"></span>RESERVE飛騨高山</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">11月</span><span class="mc-ja">霜月</span></td><td></td>
+        <td><span class="spot-name">京都・紅葉（東福寺・嵐山）</span><span class="tag tn">紅葉</span><div class="hv-note"><span class="hv-dot"></span>京都鷹峯 / VIALA annex / RESERVE東山</div></td>
+        <td><span class="spot-name">箱根・紅葉ピーク</span><span class="tag tn">紅葉</span><div class="hv-note"><span class="hv-dot"></span>VIALA箱根翡翠 / 箱根甲子園</div></td>
+        <td><span class="spot-name">鎌倉・紅葉（円覚寺・建長寺）</span><span class="tag tn">紅葉</span><div class="hv-note">近隣HV施設なし</div></td>
+        <td><span class="spot-name">有馬温泉（兵庫）</span><span class="tag tn">紅葉×名湯</span><div class="hv-note"><span class="hv-dot"></span>有馬六彩 / VIALA annex</div></td>
+        <td><span class="spot-name">白川郷（岐阜）晩秋</span><span class="tag tn">合掌造り×晩秋</span><div class="hv-note"><span class="hv-dot"></span>RESERVE飛騨高山</div></td>
+      </tr>
+      <tr><td class="mc"><span class="mc-num">12月</span><span class="mc-ja">師走</span></td><td></td>
+        <td><span class="spot-name">京都・冬のライトアップ</span><span class="tag te">ライトアップ</span><div class="hv-note"><span class="hv-dot"></span>京都鷹峯 / RESERVE東山</div></td>
+        <td><span class="spot-name">草津温泉</span><span class="tag tw">雪×温泉</span><div class="hv-note"><span class="hv-dot"></span>草津（2027開業予定）</div></td>
+        <td><span class="spot-name">白川郷・ライトアップ</span><span class="tag te">雪ライトアップ</span><div class="hv-note"><span class="hv-dot"></span>RESERVE飛騨高山</div></td>
+        <td><span class="spot-name">有馬温泉×冬</span><span class="tag tn">名湯×冬</span><div class="hv-note"><span class="hv-dot"></span>有馬六彩 / VIALA annex</div></td>
+        <td><span class="spot-name">富士山×初日の出準備（山中湖）</span><span class="tag tn">冬景色</span><div class="hv-note"><span class="hv-dot"></span>山中湖マウント富士</div></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     TAB 2: 月別HVランキング
+══════════════════════════════ -->
+<div class="tab-content" id="tab1">
+  <div class="section-header">
+    <div class="section-title">月別 — HV施設ランキング（逆引き）</div>
+    <div class="section-desc">この月に行くなら最高のHV施設はどこか ／ ◎ = ベスト ／ ○ = 次点 ／ ※草津は2027年開業予定</div>
+  </div>
+  <div class="tbl-wrap">
+  <table class="r-table">
+    <colgroup><col style="width:62px"><col style="width:96px"><col><col><col></colgroup>
+    <thead><tr><th>月</th><th>テーマ</th><th>◎ ベスト施設</th><th>○ 次点①</th><th>○ 次点②</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">1月</span><span class="r-mon-ja">睦月</span></td>
+        <td><span class="tag tw">雪×温泉</span><span class="tag tn">冬景色</span></td>
+        <td><span class="best-fac">草津 <span class="badge b-c">2027開業</span></span><div class="best-reason">湯畑の雪景色×硫黄の湯煙。草津国際スキー場も徒歩圏。日本の温泉地で冬の体験価値が最も高い場所。</div><div class="sub-tip">代替：斑尾（スキー目的なら）</div></td>
+        <td><span class="runner-fac">山中湖マウント富士</span><div class="runner-r">ダイヤモンド富士（1月中旬）。冠雪した富士山を湖畔から拝む希少体験。</div></td>
+        <td><span class="runner-fac">VIALA箱根湖悠 <span class="badge b-v">VIALA</span></span><div class="runner-r">雪×芦ノ湖。オフシーズンで空いており、VIALAグレードをゆったり使える。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">2月</span><span class="r-mon-ja">如月</span></td>
+        <td><span class="tag tn">早咲き桜</span><span class="tag te">雪景色</span></td>
+        <td><span class="best-fac">天城高原 / 伊東</span><div class="best-reason">河津桜（約8,000本）への最寄り拠点として代替なし。日本最大規模の早咲き桜を2月に体験できる唯一の施設群。</div><div class="sub-tip">河津桜まつりは例年2月上旬〜3月上旬</div></td>
+        <td><span class="runner-fac">熱海伊豆山 / VIALA annex <span class="badge b-v">VIALA</span></span><div class="runner-r">熱海桜×温泉×相模湾。早咲き桜の別拠点として。</div></td>
+        <td><span class="runner-fac">RESERVE飛騨高山 <span class="badge b-r">RESERVE</span></span><div class="runner-r">白川郷ライトアップ（完全予約制）の最寄り拠点。雪の合掌造り×ライトアップは日本冬景色の最高峰。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">3月</span><span class="r-mon-ja">弥生</span></td>
+        <td><span class="tag tn">桜</span><span class="tag tn">早春</span></td>
+        <td><span class="best-fac">熱海伊豆山 / VIALA annex <span class="badge b-v">VIALA</span></span><div class="best-reason">熱海桜（3月上旬）×相模湾×温泉の三拍子。桜シーズンの先陣を切る体験として全国屈指。ソメイヨシノより1〜2ヶ月早い。</div></td>
+        <td><span class="runner-fac">天城高原 / 伊東</span><div class="runner-r">河津桜（3月上旬まで）の終盤＋天城山麓の早春景色。</div></td>
+        <td><span class="runner-fac">PVC三養荘 <span class="badge b-s">準相互</span></span><div class="runner-r">旧岩崎家別邸の格調ある空間×河津桜（車30分）。格式×早春の組み合わせ。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">4月</span><span class="r-mon-ja">卯月</span></td>
+        <td><span class="tag tn">桜</span><span class="tag tn">新緑</span></td>
+        <td><span class="best-fac">京都鷹峯 / VIALA annex / RESERVE東山 <span class="badge b-v">VIALA</span><span class="badge b-r">RESERVE</span></span><div class="best-reason">桜×古都の組み合わせは京都でしか成立しない景観。RESERVE東山は清水寺・円山公園へ徒歩圏。</div></td>
+        <td><span class="runner-fac">箱根甲子園 / VIALA箱根翡翠 <span class="badge b-v">VIALA</span></span><div class="runner-r">芦ノ湖×桜（4月上旬）。オフシーズン明けで空いており、春の箱根を贅沢に楽しめる。</div></td>
+        <td><span class="runner-fac">那須 / 那須Retreat</span><div class="runner-r">4月下旬は芝桜・ツツジが見頃。高原の遅い春が東京とは別の季節感。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">5月</span><span class="r-mon-ja">皐月</span></td>
+        <td><span class="tag tn">新緑</span><span class="tag tn">花</span></td>
+        <td><span class="best-fac">那須 / 那須Retreat</span><div class="best-reason">那須フラワーワールドの芝桜（約100万株）×ツツジ×新緑が同時に見頃。高原の気候も快適で犬の散歩にも最適。</div></td>
+        <td><span class="runner-fac">旧軽井沢 / 軽井沢 / VIALA軽井沢 <span class="badge b-v">VIALA</span></span><div class="runner-r">軽井沢の遅い春（4月下旬〜5月上旬）。高原に桜と新緑が同時に訪れる短い春。</div></td>
+        <td><span class="runner-fac">浜名湖</span><div class="runner-r">浜名湖ガーデンパークのバラ・ハーブが見頃（5月上旬〜中旬）。湖越しの花景色。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">6月</span><span class="r-mon-ja">水無月</span></td>
+        <td><span class="tag tn">あじさい</span><span class="tag tn">青もみじ</span></td>
+        <td><span class="best-fac">箱根甲子園 / VIALA箱根翡翠 <span class="badge b-v">VIALA</span></span><div class="best-reason">箱根登山電車のあじさい（約1万本、窓に触れるほど近い）は6月中旬が最盛期。この体験は箱根でしか成立しない。</div></td>
+        <td><span class="runner-fac">京都鷹峯 / VIALA annex <span class="badge b-v">VIALA</span></span><div class="runner-r">梅雨の京都×青もみじ。観光客が減る穴場シーズンで、鷹峯の苔庭×青もみじは侘び寂びの極み。</div></td>
+        <td><span class="runner-fac">草津 <span class="badge b-c">2027開業</span></span><div class="runner-r">草津のあじさい×温泉。高原の短い夏の始まりを感じる時期。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">7月</span><span class="r-mon-ja">文月</span></td>
+        <td><span class="tag tn">避暑</span><span class="tag te">花火・祭り</span></td>
+        <td><span class="best-fac">旧軽井沢 / 軽井沢 / VIALA軽井沢 <span class="badge b-v">VIALA</span></span><div class="best-reason">日本最高クラスの避暑地として100年以上の歴史。真夏の最高気温25〜28℃前後、東京より7〜10℃低い。7月中旬〜下旬はお盆前で最も快適。</div></td>
+        <td><span class="runner-fac">熱海伊豆山 / VIALA annex <span class="badge b-v">VIALA</span></span><div class="runner-r">熱海海上花火大会（7月は月2〜3回開催）。山に囲まれた湾での音の反響が格別。高台から見下ろす特等席。</div></td>
+        <td><span class="runner-fac">VIALA箱根湖悠 <span class="badge b-v">VIALA</span></span><div class="runner-r">標高700mの芦ノ湖×屋内外プール＋サウナ3種。ペットスイートで犬連れにも対応。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">8月</span><span class="r-mon-ja">葉月</span></td>
+        <td><span class="tag tn">海水浴</span><span class="tag tn">避暑</span></td>
+        <td><span class="best-fac">勝浦</span><div class="best-reason">「夏の猛暑日がゼロ」という希少な気象特性。全室オーシャンビュー×太平洋×温泉。東京から1.5〜2時間でこの涼しさが得られる東京近郊最高の夏施設。</div><div class="sub-tip">海水浴目的なら静波海岸も同時期が◎</div></td>
+        <td><span class="runner-fac">蓼科 / 蓼科アネックス / 蓼科リゾート</span><div class="runner-r">八ヶ岳山麓の高原避暑。上高地・美ヶ原・霧ヶ峰へのベース拠点として機能。</div></td>
+        <td><span class="runner-fac">那須 / 那須Retreat</span><div class="runner-r">標高750mの高原避暑。東京より5〜7℃低く、ペット連れ旅行の夏の定番拠点。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">9月</span><span class="r-mon-ja">長月</span></td>
+        <td><span class="tag ts">食</span><span class="tag tn">初秋</span></td>
+        <td><span class="best-fac">都リゾート志摩ベイサイドテラス <span class="badge b-s">準相互</span></span><div class="best-reason">英虞湾の夕日（日本の夕日百選）×伊勢志摩の食×伊勢神宮参拝の三拍子が9月に最もバランスよく揃う。</div></td>
+        <td><span class="runner-fac">南紀田辺</span><div class="runner-r">混雑が落ち着き気候も安定。熊野古道・那智の滝をゆっくり歩ける最良期。秋の伊勢海老・カツオも旬。</div></td>
+        <td><span class="runner-fac">草津 <span class="badge b-c">2027開業</span></span><div class="runner-r">9月下旬は尾瀬の草紅葉（ヤチカワズスゲが黄金色）への拠点として唯一無二の価値。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">10月</span><span class="r-mon-ja">神無月</span></td>
+        <td><span class="tag tn">紅葉</span><span class="tag te">祭り</span></td>
+        <td><span class="best-fac">RESERVE飛騨高山 <span class="badge b-r">RESERVE</span></span><div class="best-reason">高山祭（秋：毎年10月9〜10日固定）は日本三大美祭。古い町並み×絢爛な屋台×紅葉の三拍子。祭り期間は市内全宿が満室になるため、HV会員の先行予約が決定的なアドバンテージ。</div><div class="sub-tip">祭り以外の紅葉目的なら那須・蓼科・草津も同期間が◎</div></td>
+        <td><span class="runner-fac">那須 / 那須Retreat</span><div class="runner-r">関東最速の高山紅葉（10月上旬ピーク）。茶臼岳ロープウェイからの360度紅葉パノラマ。</div></td>
+        <td><span class="runner-fac">山中湖マウント富士</span><div class="runner-r">秋の澄んだ空気×富士山×紅葉×逆さ富士。撮影スポットとして全国屈指のロケーション。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">11月</span><span class="r-mon-ja">霜月</span></td>
+        <td><span class="tag tn">紅葉</span><span class="tag te">ライトアップ</span></td>
+        <td><span class="best-fac">京都鷹峯 / VIALA annex / RESERVE東山 <span class="badge b-v">VIALA</span><span class="badge b-r">RESERVE</span></span><div class="best-reason">日本最高水準の京都紅葉（11月中旬）。鷹峯は光悦寺など穴場の名所集積地。RESERVE東山は清水寺夜間ライトアップへ徒歩圏内という唯一無二の立地。</div></td>
+        <td><span class="runner-fac">VIALA箱根湖悠 <span class="badge b-v">VIALA</span></span><div class="runner-r">富士山×紅葉×芦ノ湖の三重絶景（11月上旬）。全室半露天温泉から紅葉×湖を眺める体験。ペットスイートあり。</div></td>
+        <td><span class="runner-fac">有馬六彩 / VIALA annex有馬 <span class="badge b-v">VIALA</span></span><div class="runner-r">日本三古湯の金泉・銀泉×六甲山紅葉（11月上旬）。関西圏からのアクセスが良好。</div></td>
+      </tr>
+      <tr>
+        <td class="month-cell"><span class="r-mon-num">12月</span><span class="r-mon-ja">師走</span></td>
+        <td><span class="tag tn">冬温泉</span><span class="tag te">年越し</span></td>
+        <td><span class="best-fac">草津 <span class="badge b-c">2027開業</span></span><div class="best-reason">12月〜1月の雪×草津温泉は日本の温泉地で最も価値が高いシーズン体験。湯畑×雪×スキーの黄金コンボ。年越しに特別な意味を持たせたいなら草津が最有力。</div><div class="sub-tip">2027年開業前は有馬六彩（関西）・鬼怒川（関東）が次善策</div></td>
+        <td><span class="runner-fac">静波海岸</span><div class="runner-r">12月31日〜1月1日限定。駿河湾からの初日の出×富士山のシルエットは年に一度の絶景体験。</div></td>
+        <td><span class="runner-fac">京都鷹峯 / RESERVE東山 <span class="badge b-r">RESERVE</span></span><div class="runner-r">冬の京都は観光客が減り静寂な古都を楽しめる。清水寺・高台寺の冬のライトアップも12月に開催。</div></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     TAB 3: 施設別ベストシーズン
+══════════════════════════════ -->
+<div class="tab-content" id="tab2">
+  <div class="section-header">
+    <div class="section-title">施設別ベストシーズン詳細</div>
+    <div class="section-desc">「この施設に行くなら何月が最高か」という施設起点の逆引き ／ ◎ = ベスト ／ ○ = 次点 ／ ⭐ = 複数シーズン推奨</div>
+  </div>
+
+  <!-- エリアナビ -->
+  <div class="area-nav">
+    <span style="font-size:10px;color:var(--text3);align-self:center;margin-right:4px;">エリアへ移動：</span>
+    <button class="area-nav-btn" onclick="jumpTo('area-nasu')">北関東（那須・鬼怒川）</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-kusatsu')">草津（2027開業予定）</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-chiba')">千葉（勝浦）</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-hakone')">箱根エリア</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-atami')">熱海・伊豆エリア</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-shizuoka')">静岡・浜名湖</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-shinshu')">信州（軽井沢・蓼科・斑尾）</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-gifu')">岐阜・北陸（飛騨高山・志摩）</button>
+    <button class="area-nav-btn" onclick="jumpTo('area-kansai')">関西（京都・有馬・南紀）</button>
+  </div>
+
+  <!-- 北関東 -->
+  <div class="area-title" id="area-nasu">北関東 — 那須・鬼怒川</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">那須 / 那須Retreat</span><span class="fac-sub">栃木県那須郡 / 標高750m / ペット可</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月上旬</div><span class="tag tn">紅葉</span><div class="sc-body">茶臼岳・三本槍岳の紅葉は関東で最も早く染まる高山紅葉。10月上旬のピークを逃すと翌年まで待つことになる短命さが価値を高める。高原全体が赤・黄・オレンジに染まる360度の紅葉パノラマは圧巻。</div><div class="sc-tips"><div class="sc-tip">茶臼岳ロープウェイからの紅葉俯瞰が特におすすめ</div><div class="sc-tip">犬連れ散歩コースが豊富で朝の高原散歩が気持ちいい</div></div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">5月</div><span class="tag tn">芝桜・新緑</span><div class="sc-body">那須フラワーワールドの芝桜（約100万株）とツツジが同時に見頃を迎える。新緑の高原と花の組み合わせで、秋とは全く異なる表情の那須が楽しめる。犬の散歩に最適な季節。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">鬼怒川 / VIALA鬼怒川渓翠</span><span class="fac-sub">栃木県日光市 / 渓谷沿い</span><div class="fac-badges"><span class="badge b-hv">HV</span><span class="badge b-v">VIALA</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月下旬</div><span class="tag tn">紅葉×渓谷</span><div class="sc-body">鬼怒川渓谷沿いの紅葉は水面への映り込みが絶景。日光いろは坂の紅葉との周遊が定番で、世界遺産日光東照宮×紅葉も同時に楽しめる。VIALA鬼怒川渓翠は渓谷を望む客室で秋の景観価値が最大化する。</div><div class="sc-tips"><div class="sc-tip">日光いろは坂の紅葉ピークは例年10月中旬〜下旬</div></div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">6月</div><span class="tag tn">あじさい</span><div class="sc-body">鬼怒川沿いや日光方面の斜面にあじさいが咲く。温泉×あじさいの組み合わせで梅雨の蒸し暑さを温泉が吹き飛ばす。日光植物園のあじさいも6月が見頃。</div></div>
+    </div>
+  </div>
+
+  <!-- 草津 -->
+  <div class="area-title" id="area-kusatsu">草津 — 2027年3月開業予定 ⭐ 複数シーズン推奨</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">草津 / VIALA annex草津 / VIALA草津Retreat green</span><span class="fac-sub">群馬県吾妻郡 / 標高1,200m / 湯畑近接</span><div class="fac-badges"><span class="badge b-c">2027年3月開業</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（1〜2月 雪×温泉×スキー ／ 9月下旬 草紅葉×尾瀬 ／ 10月 紅葉）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">1〜2月</div><span class="tag tw">雪×温泉</span><span class="tag tw">スキー</span><div class="sc-body">湯畑に雪が積もり硫黄の白い湯煙が立ち込める草津でしか見られない絶景。草津国際スキー場（全長5km超）も徒歩圏内で、スキー×温泉の黄金コンボが成立する数少ない立地。湯畑のライトアップも冬季限定で実施。</div><div class="sc-tips"><div class="sc-tip">草津国際スキー場は宿から徒歩アクセス可能</div><div class="sc-tip">雪見露天風呂として全国トップクラスの体験</div></div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">9月下旬</div><span class="tag tn">草紅葉×尾瀬</span><div class="sc-body">草津から尾瀬ヶ原（車＋バスで約1.5時間）への拠点として機能。9月下旬の尾瀬草紅葉（ヤチカワズスゲが黄金色に染まる）はこの時期だけの光景。</div><div class="sc-tips"><div class="sc-tip">尾瀬草紅葉ピークは例年9月20日〜10月初旬</div></div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">10月</div><span class="tag tn">紅葉</span><div class="sc-body">草津白根山から志賀高原にかけての紅葉は関東甲信越でも屈指の早さと規模。温泉街から車10〜20分で紅葉絶景に到達できる利便性は他の温泉地にない強み。草津白根山周辺のピークは10月上旬。</div></div>
+    </div>
+  </div>
+
+  <!-- 千葉 -->
+  <div class="area-title" id="area-chiba">千葉 — 勝浦</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">勝浦</span><span class="fac-sub">千葉県勝浦市 / 全室南向きオーシャンビュー</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">7〜8月</div><span class="tag tn">海水浴・避暑</span><div class="sc-body">「夏の猛暑日がゼロ」という希少な気象特性を持つ避暑海リゾート。8月最高気温は平均27℃前後、東京より5〜8℃低い。全室オーシャンビュー×太平洋×温泉。勝浦朝市（400年の歴史）は朝6時から開催。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">1〜2月</div><span class="tag tn">冬の海景色</span><div class="sc-body">冬でも最低気温5℃前後と温暖な外房の気候。澄んだ空気で水平線がくっきり見え、房総半島の菜の花（1〜2月）とセットで楽しめる。</div></div>
+    </div>
+  </div>
+
+  <!-- 箱根 -->
+  <div class="area-title" id="area-hakone">箱根エリア ⭐ 複数施設・複数シーズン推奨</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">箱根甲子園 / VIALA箱根翡翠</span><span class="fac-sub">神奈川県足柄下郡 / 仙石原エリア / 標高約700m</span><div class="fac-badges"><span class="badge b-hv">HV</span><span class="badge b-v">VIALA</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（11月上旬 紅葉×ススキ ／ 6月中旬 あじさい電車 ／ 3〜4月 春×新緑）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">11月上旬</div><span class="tag tn">紅葉×ススキ</span><div class="sc-body">仙石原のススキ草原（約20ha）の黄金色と周囲の紅葉が重なる11月上旬が年間ピーク。カラマツやブナの黄葉も同時期。箱根最大の景観スポットを徒歩圏内から楽しめる唯一の施設群。朝霧が出る日は特に幻想的な景観になる。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">6月中旬</div><span class="tag tn">あじさい電車</span><div class="sc-body">箱根登山電車（湯本〜強羅間）沿線に約1万本のあじさいが咲き乱れ、窓から触れるほど近い距離で花を見られる体験は箱根でしか成立しない。梅雨の雨がむしろ花を鮮やかにする。見頃は例年6月中旬〜7月上旬。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">3〜4月</div><span class="tag tn">春×新緑</span><div class="sc-body">3月下旬〜4月上旬の桜と4月中旬からの新緑が入れ替わる季節。芦ノ湖×桜の組み合わせは4月上旬が狙い目。オフシーズン明けで混雑が少なく温泉との相性が良い穴場期間。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">VIALA箱根湖悠</span><span class="fac-sub">神奈川県足柄下郡 / 元箱根エリア / 芦ノ湖高台 / 2024年10月開業 / ペットスイートあり</span><div class="fac-badges"><span class="badge b-v">VIALA</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（11月上旬 紅葉×芦ノ湖 ／ 7〜8月 湖上の涼×プール ／ 1〜2月 雪×芦ノ湖）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">11月上旬</div><span class="tag tn">紅葉×芦ノ湖</span><div class="sc-body">元箱根の高台から芦ノ湖を見下ろす全室ビュー。富士山×紅葉×芦ノ湖の三重絶景はこのロケーションでしか得られない。客室半露天温泉から紅葉×湖を眺める体験が最大値になる季節。全室に半露天温泉風呂付き。</div><div class="sc-tips"><div class="sc-tip">ペットスイートは犬連れ旅行に最適</div><div class="sc-tip">富士山方面が晴れる確率が高い午前中がおすすめ</div></div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">7〜8月</div><span class="tag tn">湖上の涼×プール</span><div class="sc-body">標高約700mで真夏も最高気温25〜27℃前後と快適。屋内外プール＋3つのサウナが夏に真価を発揮。ペットスイートで犬連れ芦ノ湖散歩も可能。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">1〜2月</div><span class="tag tw">雪×芦ノ湖</span><div class="sc-body">雪化粧した芦ノ湖は幻想的な白と青の世界。オフシーズンで混雑が最も少なく、VIALAグレードをゆったり使える希少な時期。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">RESERVE箱根明神平</span><span class="fac-sub">神奈川県足柄下郡 / 仙石原エリア / In nol hakone myojindai</span><div class="fac-badges"><span class="badge b-r">RESERVE</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月下旬〜11月上旬</div><span class="tag tn">紅葉×ナチュラル</span><div class="sc-body">仙石原の高台に位置しブナ・カラマツの紅葉が美しい。農園ブッフェ朝食が特徴的なナチュラルリゾート。紅葉の季節の里山的な落ち着きが施設コンセプトと最もマッチする。農園ブッフェ朝食は地元食材にこだわった内容。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">5〜6月</div><span class="tag tn">新緑×ハイク</span><div class="sc-body">新緑の仙石原周辺はハイキングや散策に最適なシーズン。ナチュラルリゾートのコンセプトが春〜初夏の緑の中で最も体現される。箱根湿生花園（5〜6月）が近隣。</div></div>
+    </div>
+  </div>
+
+  <!-- 熱海・伊豆 -->
+  <div class="area-title" id="area-atami">熱海・伊豆エリア ⭐ 複数シーズン推奨</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">熱海伊豆山 / VIALA annex熱海伊豆山</span><span class="fac-sub">静岡県熱海市 / 伊豆山高台 / 相模湾一望</span><div class="fac-badges"><span class="badge b-hv">HV</span><span class="badge b-v">VIALA</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（2〜3月 熱海桜×温泉 ／ 7〜8月 熱海花火 ／ 12〜1月 温暖冬×富士）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">2月中旬〜3月上旬</div><span class="tag tn">熱海桜×温泉</span><div class="sc-body">熱海桜（カンヒザクラ系）は全国で最も早く咲く桜の名所のひとつ。温泉地の斜面を染める光景と相模湾の組み合わせは熱海だけで成立する絶景。ソメイヨシノより1〜2ヶ月早い。糸川沿い熱海桜（約150本）は開花が特に早い。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">7〜8月</div><span class="tag te">熱海花火</span><div class="sc-body">熱海海上花火大会は年間約20回開催される全国でも珍しい大会。山に囲まれた熱海湾での打ち上げは音が反響して迫力が段違い。伊豆山高台のホテルから見下ろす花火は特等席。花火大会は年間20回前後、7〜8月は月2〜3回程度。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">12〜1月</div><span class="tag tn">温暖冬×富士</span><div class="sc-body">冬の澄んだ空気で相模湾越しに富士山が見える確率が年間最高。オフシーズンで混雑なく温泉三昧に最適。年末年始の花火大会が開催される年もある。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">天城高原 / 伊東</span><span class="fac-sub">静岡県伊豆市・伊東市 / 天城山麓</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">2月中旬〜下旬</div><span class="tag tn">河津桜</span><div class="sc-body">河津桜（約8,000本、日本最大規模の早咲き桜）への最寄り拠点として唯一無二の価値。河津町まで車約30分。川沿い2kmの桜並木と菜の花のコントラストが絶景。</div><div class="sc-tips"><div class="sc-tip">河津桜まつりは例年2月上旬〜3月上旬、ピークは2月中旬〜下旬</div></div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">10〜11月</div><span class="tag tn">紅葉×渓流</span><div class="sc-body">天城山麓の紅葉と渓流の組み合わせ。伊豆は関東より紅葉が遅く11月中旬〜下旬がピーク。浄蓮の滝周辺の紅葉が美しい。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">山中湖マウント富士</span><span class="fac-sub">山梨県南都留郡 / 山中湖湖畔 / 富士山一望</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月上旬</div><span class="tag tn">富士×紅葉</span><div class="sc-body">秋の澄んだ空気と山中湖畔の紅葉×富士山の組み合わせが年間最高の景観。「逆さ富士」も出現しやすく、撮影スポットとして全国屈指。朝霧が晴れる午前8〜10時が特に美しい。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">1月中旬</div><span class="tag tn">ダイヤモンド富士</span><div class="sc-body">日没時に富士山頂に太陽が重なるダイヤモンド富士は年に数日しかない希少体験。冬の冠雪した富士山は迫力と美しさが別格。観測可能日は事前確認必須。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">PVC三養荘</span><span class="fac-sub">静岡県伊豆の国市 / 旧岩崎家別邸 / 川奈ゴルフコース優待あり</span><div class="fac-badges"><span class="badge b-s">準相互</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">2月中旬〜下旬</div><span class="tag tn">河津桜×格式</span><div class="sc-body">旧岩崎家別邸を改装した格式ある施設で、河津桜（車約30分）への拠点として機能。格調ある旧別邸の庭園×桜はPVC三養荘ならではの体験。川奈ホテルゴルフコース（富士コース）への優待あり。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">11月</div><span class="tag tn">紅葉×日本庭園</span><div class="sc-body">旧岩崎家別邸の日本庭園×紅葉が施設の格調と最もマッチする。伊豆の紅葉は11月中旬〜下旬がピーク。川奈ゴルフは秋が最良コンディション。</div></div>
+    </div>
+  </div>
+
+  <!-- 静岡・浜名湖 -->
+  <div class="area-title" id="area-shizuoka">静岡・浜名湖エリア</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">浜名湖</span><span class="fac-sub">静岡県浜松市 / 浜名湖湖畔</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">4月下旬〜5月</div><span class="tag tn">花×湖</span><div class="sc-body">浜名湖ガーデンパークの春の花（バラ・ハーブなど）が見頃。湖越しの景観が最も美しい季節。GW後の5月中旬〜下旬は混雑が落ち着きゆっくり楽しめる。浜名湖産鰻との組み合わせも◎。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">9〜10月</div><span class="tag ts">鰻×秋の湖</span><div class="sc-body">浜名湖産鰻の旬（秋は特に脂が乗る）と湖上の静かな秋景色が重なる。夏の混雑が落ち着き湖上ボートなどのアクティビティも楽しみやすい。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">静波海岸</span><span class="fac-sub">静岡県牧之原市 / 駿河湾ビーチ</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">7〜8月</div><span class="tag tn">海水浴</span><div class="sc-body">駿河湾に面したビーチリゾートとして夏が本領。波が穏やかでファミリー海水浴にも適している。周辺に牧之原台地の茶畑ドライブコースがある。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">12月31日〜1月1日</div><span class="tag te">初日の出×富士</span><div class="sc-body">駿河湾から見る元旦の初日の出と富士山の組み合わせは全国でも指折りの絶景スポット。年に一度しかない特別体験。予約は非常に早く埋まるため早期確保が必須。</div></div>
+    </div>
+  </div>
+
+  <!-- 信州 -->
+  <div class="area-title" id="area-shinshu">信州 — 軽井沢・蓼科・斑尾・勝山 ⭐ 軽井沢・PVC軽井沢は複数シーズン推奨</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">旧軽井沢 / アネックス / 軽井沢 / VIALA annex軽井沢 / VIALA軽井沢Retreat</span><span class="fac-sub">長野県北佐久郡 / 標高約1,000m / 別荘地エリア</span><div class="fac-badges"><span class="badge b-hv">HV</span><span class="badge b-v">VIALA</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（10月上旬 紅葉×白樺 ／ 7〜8月 避暑の王道 ／ 4月下旬〜5月 遅い春×桜）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月上旬</div><span class="tag tn">紅葉×白樺</span><div class="sc-body">白樺×カラマツが黄金色に染まる軽井沢の紅葉は、日本の別荘地文化と高原景観が重なる唯一の体験。雲場池の水面に映る紅葉（通称「軽井沢の鏡」）はピークが例年10月中旬前後。軽井沢高原教会の秋ライトアップも開催。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">7〜8月</div><span class="tag tn">避暑の王道</span><div class="sc-body">標高約1,000mで真夏の最高気温25〜28℃前後、東京より7〜10℃低い100年以上の歴史を持つ避暑地。7月中旬〜下旬がお盆前で最も快適。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">4月下旬〜5月</div><span class="tag tn">遅い春×桜</span><div class="sc-body">東京より3〜4週間遅い軽井沢の春。GW頃に新緑と桜が同時に楽しめる高原特有の清々しい春。VIALA軽井沢はガーデンの緑が芽吹く時期に特に美しい。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">PVC軽井沢浅間 / PVCヴィラ軽井沢浅間</span><span class="fac-sub">長野県北佐久郡 / 軽井沢プリンスホテル敷地内 / ゴルフ場・スキー場隣接</span><div class="fac-badges"><span class="badge b-s">準相互</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（10月上旬 紅葉×浅間山 ／ 7〜8月 避暑×ゴルフ ／ 1〜2月 スキー直結）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月上旬</div><span class="tag tn">紅葉×浅間山</span><div class="sc-body">浅間山と白樺林の紅葉を正面に望む。ヴィラタイプは15棟の独立棟で別荘感が高く、紅葉の中に建つプライベート空間として唯一無二。軽井沢72ゴルフへの会員優待価格でのプレーが可能。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">7〜8月</div><span class="tag tn">避暑×ゴルフ</span><div class="sc-body">ゴルフ場・テニスコート・アウトレットが徒歩圏内。軽井沢72ゴルフを会員優待価格で利用できるため、ゴルフ×避暑の組み合わせで使うなら最適な施設。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">1〜2月</div><span class="tag tw">スキー直結</span><div class="sc-body">軽井沢プリンスホテルスキー場（徒歩数分）はファミリースキーに特化した緩斜面中心のコース。スキー後に軽井沢の街並みへのアクセスが良い点が差別化要因。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">蓼科 / 蓼科アネックス / 蓼科リゾート</span><span class="fac-sub">長野県茅野市 / 八ヶ岳連峰山麓 / 標高約1,200m</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月上旬</div><span class="tag tn">紅葉×八ヶ岳</span><div class="sc-body">白樺湖・蓼科山麓の紅葉は信州で指折りの美しさ。八ヶ岳連峰との組み合わせで写真映えは随一。車山高原からの360度パノラマ紅葉が圧巻。ピークは例年10月上旬〜中旬。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">8月</div><span class="tag tn">避暑×上高地拠点</span><div class="sc-body">高原避暑地として機能しつつ、上高地・美ヶ原・霧ヶ峰（車30〜40分）へのベース拠点となる。8月の上高地は梓川×穂高連峰の絶景が見頃。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">斑尾</span><span class="fac-sub">長野県中野市 / タングラムスキーサーカス直結</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">1〜2月</div><span class="tag tw">スキー</span><div class="sc-body">タングラムスキーサーカスのゲレンデ直結。パウダースノーの質は長野でも上位クラス。スキーインスキーアウト可能なHV施設随一の利便性。1〜2月がパウダースノーの最良期。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">8月</div><span class="tag tn">高原アクティビティ</span><div class="sc-body">夏はゲレンデがグリーンシーズンとなりトレッキング・マウンテンバイクが楽しめる。北信州の大自然の中でのアクティビティが充実。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">スキージャム勝山</span><span class="fac-sub">福井県勝山市 / 5月上旬まで営業するロングシーズンゲレンデ</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">1〜3月</div><span class="tag tw">スキー</span><div class="sc-body">日本有数の長期営業ゲレンデで5月上旬まで滑れる。積雪量が多く安定したコンディションが長期間続くのが最大の強み。恐竜博物館（勝山市）との組み合わせが定番周遊。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">4〜5月</div><span class="tag tw">春スキー</span><div class="sc-body">HV施設唯一の4〜5月スキー可能施設。勝山城跡の桜（4月中旬）と春スキーの同日体験が可能。</div></div>
+    </div>
+  </div>
+
+  <!-- 岐阜・北陸・志摩 -->
+  <div class="area-title" id="area-gifu">岐阜・北陸・伊勢志摩エリア</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">RESERVE飛騨高山</span><span class="fac-sub">岐阜県高山市 / In 東急ステイ飛騨高山 結の湯</span><div class="fac-badges"><span class="badge b-r">RESERVE</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">10月9〜10日前後</div><span class="tag te">秋の高山祭</span><div class="sc-body">高山祭（秋：毎年10月9〜10日固定）は日本三大美祭のひとつ。古い町並み×絢爛な屋台×紅葉の三拍子が揃う「この日のためにある施設」。祭り期間は市内全宿が満室になるため早期確保が決定的なアドバンテージ。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">2月</div><span class="tag te">白川郷ライトアップ拠点</span><div class="sc-body">白川郷の冬の夜間ライトアップ（2月開催、完全予約制）への最寄り拠点として代替なし。雪の合掌造り集落が幻想的な光に包まれる光景は日本の冬景色の最高峰のひとつ。高山から白川郷まで車約1時間。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">都リゾート 志摩ベイサイドテラス</span><span class="fac-sub">三重県志摩市 / 英虞湾一望 / 伊勢志摩国立公園内</span><div class="fac-badges"><span class="badge b-s">準相互</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">9〜10月</div><span class="tag ts">伊勢海老×英虞湾</span><div class="sc-body">英虞湾の眺望×伊勢海老漁解禁（10月〜）×英虞湾の夕日（日本の夕日百選）が重なる秋が最高潮。リアス式の英虞湾は夕景が格別で、伊勢神宮参拝との組み合わせも可能。</div><div class="sc-tips"><div class="sc-tip">伊勢海老漁解禁は例年10月〜翌4月</div></div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">2〜3月</div><span class="tag ts">牡蠣×穏やかな海</span><div class="sc-body">的矢牡蠣の旬×穏やかな冬の英虞湾が楽しめる。春の伊勢志摩は桜×海の組み合わせが楽しめる。</div></div>
+    </div>
+  </div>
+
+  <!-- 関西 -->
+  <div class="area-title" id="area-kansai">関西 — 京都・有馬・南紀 ⭐ 複数シーズン推奨</div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">京都鷹峯 / VIALA annex京都鷹峯 / RESERVE京都東山</span><span class="fac-sub">京都府京都市 / 鷹峯エリア（北区）・東山エリア</span><div class="fac-badges"><span class="badge b-hv">HV</span><span class="badge b-v">VIALA</span><span class="badge b-r">RESERVE</span><span class="badge b-multi">複数シーズン</span></div></div>
+    <div class="multi-banner">⭐ 全国的人気スポット — 複数シーズン推奨（11月中旬 紅葉 ／ 3月下旬〜4月上旬 桜×古都 ／ 6月 青もみじ）</div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">11月中旬</div><span class="tag tn">紅葉</span><div class="sc-body">日本最高水準の京都紅葉。鷹峯は光悦寺・源光庵が集まる穴場の紅葉名所。RESERVE東山は清水寺・高台寺のライトアップへ徒歩圏内で夜間拝観の拠点として最高の立地。早朝6〜8時の寺院散策なら混雑を回避できる。</div><div class="sc-tips"><div class="sc-tip">鷹峯の紅葉ピークは例年11月中旬〜下旬</div></div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">3月下旬〜4月上旬</div><span class="tag tn">桜×古都</span><div class="sc-body">円山公園の祇園しだれ桜、哲学の道の桜並木など、桜と古都の組み合わせは京都でしか成立しない景観。醍醐寺の豊太閤花見行列（4月第2日曜）は圧巻の桜イベント。</div></div>
+      <div class="sc"><div class="sc-label">○ おすすめ</div><div class="sc-mon">6月</div><span class="tag tn">青もみじ</span><div class="sc-body">梅雨の京都は観光客が減り、青もみじが瑞々しく輝く穴場シーズン。鷹峯の源光庵・光悦寺の庭園は6月が特に美しく、雨の日の石畳と青もみじは侘び寂びの極み。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">有馬六彩 / VIALA annex有馬六彩</span><span class="fac-sub">兵庫県神戸市北区 / 有馬温泉郷 / 日本三古湯</span><div class="fac-badges"><span class="badge b-hv">HV</span><span class="badge b-v">VIALA</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">11月上旬</div><span class="tag tn">紅葉×名湯</span><div class="sc-body">日本三古湯の金泉（赤褐色）×銀泉（透明な炭酸泉）×六甲山の紅葉が11月に重なる。温泉街の石畳と紅葉が美しく、関西からのアクセスも良好。有馬温泉の紅葉ピークは例年11月上旬〜中旬。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">12〜1月</div><span class="tag tn">冬の名湯</span><div class="sc-body">冬は関西圏からの年末年始需要が高く、特別感ある滞在として価値が高い。有馬の金泉は体を芯まで温める効果が高く、寒い季節に真価を発揮する。年末年始は早期確保が必須。</div></div>
+    </div>
+  </div>
+  <div class="facility">
+    <div class="fac-header"><span class="fac-name">南紀田辺</span><span class="fac-sub">和歌山県田辺市 / 熊野古道・白浜エリア</span><div class="fac-badges"><span class="badge b-hv">HV</span></div></div>
+    <div class="seasons-grid">
+      <div class="sc"><div class="sc-label best">◎ ベスト</div><div class="sc-mon best">9月</div><span class="tag ts">熊野古道×食</span><div class="sc-body">混雑が落ち着き気候も安定した9月が最良期。熊野古道・那智の滝をゆっくり歩ける。秋の伊勢海老・カツオも旬。HV施設最南端の世界遺産観光拠点。那智の滝・熊野那智大社も日帰り圏内。</div></div>
+      <div class="sc"><div class="sc-label">○ 次点</div><div class="sc-mon">1〜2月</div><span class="tag tn">温暖避寒</span><div class="sc-body">日本有数の温暖な気候で冬でも最低気温8〜10℃前後。みなべ町の南高梅梅林（2月、日本最大規模）が近隣。</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(idx) {
+  document.querySelectorAll('.tab-content').forEach((el,i) => el.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-btn').forEach((el,i) => el.classList.toggle('active', i===idx));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
